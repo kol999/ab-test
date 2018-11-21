@@ -1,0 +1,21 @@
+#!/bin/bash
+
+TARGET_FILE=/var/www/html/index.html
+# TARGET_FILE=index.html
+TARGET_BKUP=index.bkup
+cp "$TARGET_FILE" "$TARGET_BKUP"
+
+sed -i 's/<\/body>//g' $TARGET_FILE 
+sed -i 's/<\/html>//g' $TARGET_FILE 
+
+if [ ! $(grep 'APPLICATION_NAME' $TARGET_FILE) ]; then
+    echo "<h4>APPLICATION_NAME:$APPLICATION_NAME</h4>">>$TARGET_FILE
+    echo "<h4>DEPLOYMENT_ID:$DEPLOYMENT_ID</h4>">>$TARGET_FILE
+    echo "<h4>DEPLOYMENT_GROUP_NAME:$DEPLOYMENT_GROUP_NAME</h4>">>$TARGET_FILE
+    echo "<h4>DEPLOYMENT_GROUP_ID:$DEPLOYMENT_GROUP_ID</h4>">>$TARGET_FILE
+fi
+
+echo "<h4>LIFECYCLE_EVENT:$LIFECYCLE_EVENT</h4>">>$TARGET_FILE
+
+echo "</body>">>$TARGET_FILE
+echo "</html>">>$TARGET_FILE
